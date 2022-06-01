@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Bullet {
 
     public static final int SPEED = 700;
-    public static final int DEFAULT_Y = 100;
-    public static final int WIDTH = 3*3;
-    public static final int HEIGHT = 12*3;
+    public static final int DEFAULT_Y = 320;
+    public static final int WIDTH = 3*5;
+    public static final int HEIGHT = 12*5;
     private static Texture texture;
 
     float x, y;
@@ -34,7 +34,7 @@ public class Bullet {
     }
 
     public void render (SpriteBatch batch) {
-        batch.draw(texture, x, y);
+        batch.draw(texture, x, y,WIDTH,HEIGHT);
     }
 
     public Collision getCollisionRect() {

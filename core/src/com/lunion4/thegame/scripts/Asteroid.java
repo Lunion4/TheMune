@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Asteroid {
 
     public static final int SPEED = 250;
-    public static final int WIDTH = 14*5;
-    public static final int HEIGHT = 14*5;
+    public static final int WIDTH = 14*6;
+    public static final int HEIGHT = 14*6;
     private static Texture texture;
 
     float x, y;

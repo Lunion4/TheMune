@@ -27,7 +27,7 @@ public class MainGameScreen implements Screen {
     public static final int SHIP_W = SHIP_W_PIX * 12;
     public static final int SHIP_H = SHIP_H_PIX * 12;
     public static final int HEART = 13*10;
-    float x,y;
+    float x,y, SHIP_CENT;
     Texture ship;
     Texture h1,h2,h3;
     Random random;
@@ -35,12 +35,14 @@ public class MainGameScreen implements Screen {
     ArrayList<Asteroid> asteroids;
     ArrayList<Bullet> bullets;
     BitmapFont scoreFont;
+    int shoot_time;
 
     public MainGameScreen(MuneGame game) {
         this.game = game;
         score = 0;
         health = 3;
         y = 100;
+        shoot_time = 4000;
         x = Gdx.graphics.getWidth() / 2 - SHIP_W / 2;
         player_collision = new Collision(0,0,SHIP_W,SHIP_H);
         ship = new Texture("ship.png");
@@ -48,7 +50,7 @@ public class MainGameScreen implements Screen {
         h2 = new Texture("heart.png");
         h3 = new Texture("heart.png");
         random = new Random();
-        SpawnAsteroid = random.nextFloat() * 0.01f + 0.05f;
+        SpawnAsteroid = random.nextFloat() * 0.01f + 0.1f;
         asteroids = new ArrayList<Asteroid>();
         bullets = new ArrayList<Bullet>();
         scoreFont = new BitmapFont(Gdx.files.internal("fonts/score.fnt"));
@@ -57,14 +59,14 @@ public class MainGameScreen implements Screen {
 
     @Override
     public void show() {}
-
+    boolean shoot(){return Gdx.input.isTouched() && Gdx.input.getY()<=(Gdx.graphics.getHeight()/3)*2 && shoot_time <= 0;}
     @Override
     public void render(float delta) {
 
         //Spawn Asteroid
         SpawnAsteroid -= delta;
         if (SpawnAsteroid <= 0){
-            SpawnAsteroid = random.nextFloat() * 0.01f + 0.05f;
+            SpawnAsteroid = random.nextFloat() * 0.01f + 0.1f;
             asteroids.add(new Asteroid(random.nextInt(Gdx.graphics.getHeight()-Asteroid.HEIGHT)));
         }
         //Update Asteroid
@@ -76,9 +78,13 @@ public class MainGameScreen implements Screen {
         }
         //Стрельба
         if (shoot()){
-            bullets.add(new Bullet(x + 4));
-            bullets.add(new Bullet(x + SHIP_W - 4));
+            shoot_time += 3000;
+            SHIP_CENT = x + SHIP_W/2;
+            bullets.add(new Bullet(SHIP_CENT));
+            bullets.add(new Bullet(SHIP_CENT + SHIP_W/2));
+            bullets.add(new Bullet(SHIP_CENT - SHIP_W/2));
         }
+        shoot_time -= 50;
         //Update Bullet
         ArrayList<Bullet> removedBullet = new ArrayList<Bullet>();
         for (Bullet bullet : bullets) {
@@ -95,7 +101,7 @@ public class MainGameScreen implements Screen {
                 if (bullet.getCollisionRect().collidesWith(asteroid.getCollisionRect())) {//Collision occured
                     removedBullet.add(bullet);
                     removedAsteroid.add(asteroid);
-                    score += 100;
+                    score += 10;
                 }
             }
         }
@@ -144,7 +150,7 @@ public class MainGameScreen implements Screen {
     }
     boolean isRight(){return Gdx.input.isTouched() && Gdx.input.getX() >= Gdx.graphics.getWidth()/2 && Gdx.input.getY()>(Gdx.graphics.getHeight()/3)*2;}
     boolean isLeft(){return Gdx.input.isTouched() && Gdx.input.getX() < Gdx.graphics.getWidth()/2 && Gdx.input.getY()>(Gdx.graphics.getHeight()/3)*2;}
-    boolean shoot(){return Gdx.input.isTouched() && Gdx.input.getY()<=(Gdx.graphics.getHeight()/3)*2;}
+
     @Override
     public void resize(int width, int height) {
 

@@ -10,7 +10,8 @@ public class ScrollingBackground {
     float imgScale;
     int speed;
     public ScrollingBackground(){
-        img = new Texture("stars_background.png");
+        //img = new Texture("stars_background.png");
+        img = new Texture("aaa.png");
         y0 = 0;
         y1 = img.getHeight();
         imgScale = Gdx.graphics.getWidth() / img.getWidth();

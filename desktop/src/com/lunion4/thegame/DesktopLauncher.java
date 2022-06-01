@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("The Mune");
 		config.setResizable(false);
+		config.setWindowedMode(400,800);
 		new Lwjgl3Application(new MuneGame(), config);
 	}
 }
